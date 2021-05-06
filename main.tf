@@ -39,6 +39,13 @@ resource "yandex_compute_instance" "vm-1" {
   provisioner "file" {
     source      = "Dockerfile"
     destination = "/tmp/Dockerfile"
+
+    connection {
+      type     = "ssh"
+      user     = "root"
+      private_key = file("/root/.ssh/id_rsa")
+      host        = "${yandex_compute_instance.vm-1.network_interface.0.ip_address}"
+    }
   }
 
   provisioner "remote-exec" {
@@ -52,7 +59,7 @@ resource "yandex_compute_instance" "vm-1" {
       "docker logout"
     ]
 
-  connection {
+    connection {
       type     = "ssh"
       user     = "root"
       private_key = file("/root/.ssh/id_rsa")
