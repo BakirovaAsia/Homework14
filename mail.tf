@@ -51,6 +51,14 @@ resource "yandex_compute_instance" "vm-1" {
       "docker push ",
       "docker logout"
     ]
+
+  connection {
+      type     = "ssh"
+      user     = "root"
+      private_key = file("/root/.ssh/id_rsa")
+      host        = ${yandex_compute_instance.vm-1.network_interface.0.ip_address}
+    }
+
   }
 }
 
@@ -88,8 +96,8 @@ resource "yandex_compute_instance" "vm-2" {
       type     = "ssh"
       user     = "root"
       private_key = file("/root/.ssh/id_rsa")
-      host        = self.network_interface[0].access_config[0].nat_ip
-    }  
+      host        = ${yandex_compute_instance.vm-2.network_interface.0.ip_address}
+    }
   
   }
 
