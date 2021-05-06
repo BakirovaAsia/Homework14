@@ -82,8 +82,15 @@ resource "yandex_compute_instance" "vm-2" {
       "apt update",
       "apt install -y docker.io",
       "docker run -d caucus:latest",
-      
     ]
+
+    connection {
+      type     = "ssh"
+      user     = "root"
+      private_key = file("/root/.ssh/id_rsa")
+      host        = self.network_interface[0].access_config[0].nat_ip
+    }  
+  
   }
 
 }
