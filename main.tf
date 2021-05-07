@@ -121,8 +121,8 @@ resource "null_resource" "web" {
   # ...
 
   provisioner "local-exec" {
-    command = " yc iam key create --service-account-name vmmanager -o key.json \
-                && echo repo_id: ${yandex_container_repository.repo-1.id}"
+    command = " yc iam key create --service-account-name vmmanager -o key.json"
+    command = " echo repo_id: ${yandex_container_repository.repo-1.id}"
   }
 }
 
