@@ -3,7 +3,7 @@
 - name: Copy key.json
   copy:
     src: key.json
-    dest: /tmp/key.json
+    dest: /home/ubuntu/key.json
 
 - name: Ensure git is install
   apt:
