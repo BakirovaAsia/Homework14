@@ -52,12 +52,16 @@ resource "yandex_compute_instance" "vm-1" {
     inline = [
       "apt update",
       "apt install -y docker.io",
-      "cd /tmp",
-      "docker build -t caucus:latest .",
-      "docker login",
-      "docker push ",
-      "docker logout"
+      "cd /tmp"
+      
     ]
+
+//,
+      //"docker build -t caucus:latest .",
+      //"docker login",
+      //"docker push ",
+      //"docker logout"
+
 
     connection {
       type     = "ssh"
@@ -102,8 +106,9 @@ resource "yandex_compute_instance" "vm-2" {
   provisioner "remote-exec" {
     inline = [
       "apt update",
-      "apt install -y docker.io",
-      "docker run -d caucus:latest",
+      "apt install -y docker.io"
+      //,
+      //"docker run -d caucus:latest"
     ]
 
     connection {
