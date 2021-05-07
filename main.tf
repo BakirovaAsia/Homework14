@@ -39,7 +39,7 @@ resource "yandex_compute_instance" "vm-1" {
 }
 
 resource "yandex_compute_instance" "vm-2" {
-  name = "deploy_vm"
+  name = "deploy-vm"
 
   resources {
     cores  = 2
