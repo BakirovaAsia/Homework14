@@ -38,12 +38,6 @@ resource "yandex_compute_instance" "vm-1" {
 
 }
 
-resource "time_sleep" "wait_90_seconds_vm1" {
-  depends_on = [yandex_compute_instance.vm-1]
-
-  create_duration = "30s" 
-}
-
 resource "yandex_compute_instance" "vm-2" {
   name = "deploy_vm"
 
@@ -67,12 +61,6 @@ resource "yandex_compute_instance" "vm-2" {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
 
-}
-
-resource "time_sleep" "wait_90_seconds_vm2" {
-  depends_on = [yandex_compute_instance.vm-2]
-
-  create_duration = "30s" 
 }
 
 resource "yandex_vpc_network" "network-1" {
