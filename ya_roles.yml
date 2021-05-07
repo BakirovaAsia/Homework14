@@ -13,6 +13,14 @@
         hostname: "{{ vm2_public_ip }}"
         groupname: deploy_host
         ansible_ssh_user: ubuntu      
+    
+    - name: Copy key.json
+      copy:
+        src: key.json
+        dest: /home/ubuntu/key.json
+        owner: ubuntu
+        group: ubuntu
+
 
 
 - name: Build-server configuration

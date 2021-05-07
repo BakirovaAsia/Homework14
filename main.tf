@@ -121,7 +121,8 @@ resource "null_resource" "web" {
   # ...
 
   provisioner "local-exec" {
-    command = "echo vm1: ${yandex_compute_instance.vm-1.network_interface.0.ip_address}"
+    command = " yc iam key create --service-account-name vmmanager -o key.json \
+                echo vm1: ${yandex_compute_instance.vm-1.network_interface.0.ip_address}"
   }
 }
 
