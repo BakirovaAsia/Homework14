@@ -99,7 +99,7 @@ resource "yandex_container_repository_iam_binding" "pusher" {
   role        = "container-registry.images.pusher"
 
   members = [
-    "serviceAccount:${yandex_iam_service_account.sa.id}",
+    "userAccount:ajer2qkj3j3bv36ialom",
   ]
 }
 
