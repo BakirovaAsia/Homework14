@@ -122,7 +122,7 @@ resource "null_resource" "ansible" {
               --extra-vars \
                   "vm1_public_ip=${yandex_compute_instance.vm-1.network_interface.0.nat_ip_address} \
                    vm2_public_ip=${yandex_compute_instance.vm-2.network_interface.0.nat_ip_address} \
-                  repo_id=${yandex_container_registry.my-registry.id}"
+                  reg_id=${yandex_container_registry.my-registry.id}"
     EOT
   }
 }
