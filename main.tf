@@ -120,8 +120,8 @@ output "internal_ip_address_vm_2" {
 resource "null_resource" "ansible" {
 
   provisioner "local-exec" {
-    command = " yc iam key create --service-account-name vmmanager -o key.json 
-     command = " echo repo_id: ${yandex_container_repository.repo-1.id}"
+    command = " yc iam key create --service-account-name vmmanager -o key.json" 
+    command = " echo repo_id: ${yandex_container_repository.repo-1.id}"
   }
 }
 
