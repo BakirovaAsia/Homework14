@@ -81,12 +81,8 @@ resource yandex_container_registry "my-registry" {
   name      = "docker-registry"
 }
 
-resource yandex_container_repository repo-1 {
-  name      = "${yandex_container_registry.my-registry.id}/repo-1"
-}
-
-resource "yandex_container_repository_iam_binding" "puller" {
-  repository_id = yandex_container_repository.repo-1.id
+resource "yandex_container_registry_iam_binding" "puller" {
+  registry_id  = yandex_container_registry.my-registry-1.id
   role        = "container-registry.images.puller"
 
   members = [
@@ -94,12 +90,12 @@ resource "yandex_container_repository_iam_binding" "puller" {
   ]
 }
 
-resource "yandex_container_repository_iam_binding" "pusher" {
-  repository_id = yandex_container_repository.repo-1.id
+resource "yandex_container_registry_iam_binding" "pusher" {
+  registry_id  = yandex_container_registry.my-registry-1.id
   role        = "container-registry.images.pusher"
 
   members = [
-    "userAccount:ajer2qkj3j3bv36ialom",
+    "serviceAccount:${yandex_iam_service_account.sa.id}",
   ]
 }
 
@@ -122,7 +118,7 @@ resource "null_resource" "ansible" {
   provisioner "local-exec" {
     command = <<EOT
      yc iam key create --service-account-name vmmanager -o key.json    
-     echo repo_id: ${yandex_container_repository.repo-1.id}
+     echo registry_id: ${yandex_container_registry.my-registry.id}
     EOT
   }
 }
