@@ -4,5 +4,5 @@ my_repo: https://github.com/BakirovaAsia/Homework7.git
 build_dir: /home/admin/Homework7
 yandex_registry: cr.yandex
 ya_cr_username: json_key 
-ya_cr_password : oauth 
+ya_cr_password : /tmp/key.json 
 repo_id: crp5d6j0eg5f0o01r13g

@@ -17,7 +17,7 @@
     - name: Copy key.json
       copy:
         src: key.json
-        dest: /home/ubuntu/key.json
+        dest: /tmp/key.json
         owner: ubuntu
         group: ubuntu
 
