@@ -1,0 +1,14 @@
+---
+# tasks file for deployer
+- name: Ensure an image is pull
+  docker_image:
+    name: bakirovaasia/caucuscalculator:latest
+    source: pull
+
+- name: Ensure a container is start
+  docker_container:
+    name: CaucusCalculator
+    image: bakirovaasia/caucuscalculator:latest
+    state: started
+    ports:
+      - "8080:8080"

@@ -1,0 +1,110 @@
+---
+- name: Create a instance for building
+  hosts: localhost
+  vars:
+    keypair: AnsKeyPair
+    instance_type: t2.micro
+    security_group: AnsSecGroup
+    image: ami-08962a4068733a2b6
+    region: us-east-2
+    subnet_id: subnet-308dd07c
+    key_inst: InstanceKey
+  tasks:
+    - name: Create a new EC2 key pair for Staging and Production environments
+      ec2_key:
+        name: "{{ key_inst }}"
+        region: "{{ region }}"
+      register: ec2_key
+
+    - name: Save private key
+      copy:
+        content: "{{ ec2_key.key.private_key }}"
+        dest: "./keys/{{ key_inst }}.pem"
+        mode: 0600
+      when: ec2_key.changed
+
+    - name: Launch instance
+      ec2:
+        key_name: "{{ key_inst }}"
+        group: "{{ security_group }}"
+        instance_type: "{{ instance_type }}"
+        image: "{{ image }}"
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ subnet_id }}"
+        assign_public_ip: yes
+        instance_tags:
+          Name: build_server
+          exact_count: 1
+        count_tag:
+          Name: build_server
+          exact_count: 1
+        wait: yes
+
+      register: ec2
+
+    - name: Add new instance to host group
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: build_host
+        ansible_ssh_private_key_file: ./keys/{{ key_inst }}.pem
+        ansible_ssh_user: ubuntu
+      loop: "{{ ec2.instances }}"
+
+
+- name: Create a instance for deploying
+  hosts: localhost
+  vars:
+    keypair: AnsKeyPair
+    instance_type: t2.micro
+    security_group: AnsSecGroup
+    image: ami-08962a4068733a2b6
+    region: us-east-2
+    subnet_id: subnet-5bfb4430
+    key_inst: InstanceKey
+  tasks:
+    - name: Launch instance
+      ec2:
+        key_name: "{{ key_inst }}"
+        group: "{{ security_group }}"
+        instance_type: "{{ instance_type }}"
+        image: "{{ image }}"
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ subnet_id }}"
+        assign_public_ip: yes
+        instance_tags:
+          Name: deploy_server
+          exact_count: 1
+        count_tag:
+          Name: deploy_server
+          exact_count: 1
+        wait: yes
+      register: ec2
+
+    - name: Add new instance to host group
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: deploy_host
+        ansible_ssh_private_key_file: ./keys/{{ key_inst }}.pem
+        ansible_ssh_user: ubuntu
+      loop: "{{ ec2.instances }}"
+
+
+- name: Build-server configuration
+  hosts: build_host
+  become: yes
+  vars_files:
+    - vars.yml
+
+  roles:
+    - docker
+    - builder
+
+
+- name: Web-server configuration
+  hosts: deploy_host
+
+  become: yes
+
+  roles:
+    - docker
+    - deployer

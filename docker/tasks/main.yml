@@ -1,0 +1,15 @@
+---
+# tasks file for docker
+- name: Ensure python3-pip and docker.io is install
+  apt:
+    update-cache: yes
+    pkg:
+      - python3-pip
+      - docker.io
+    
+    state: present
+
+- name: Ensure pip docker is install
+  pip: 
+    name: docker
+    state: present

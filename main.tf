@@ -36,48 +36,12 @@ resource "yandex_compute_instance" "vm-1" {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
 
-  provisioner "file" {
-    source      = "Dockerfile"
-    destination = "/tmp/Dockerfile"
-
-    connection {
-      type     = "ssh"
-      user     = "root"
-      private_key = file("/root/.ssh/id_rsa")
-      host        = "${yandex_compute_instance.vm-1.network_interface.0.ip_address}"
-    }
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "apt update",
-      "apt install -y docker.io",
-      "cd /tmp"
-      
-    ]
-
-//,
-      //"docker build -t caucus:latest .",
-      //"docker login",
-      //"docker push ",
-      //"docker logout"
-
-
-    connection {
-      type     = "ssh"
-      user     = "root"
-      private_key = file("/root/.ssh/id_rsa")
-      host        = "${yandex_compute_instance.vm-1.network_interface.0.ip_address}"
-    }
-
-  }
 }
-
 
 resource "time_sleep" "wait_90_seconds_vm1" {
   depends_on = [yandex_compute_instance.vm-1]
 
-  create_duration = "90s" 
+  create_duration = "30s" 
 }
 
 resource "yandex_compute_instance" "vm-2" {
@@ -103,29 +67,12 @@ resource "yandex_compute_instance" "vm-2" {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "apt update",
-      "apt install -y docker.io"
-      //,
-      //"docker run -d caucus:latest"
-    ]
-
-    connection {
-      type     = "ssh"
-      user     = "root"
-      private_key = file("/root/.ssh/id_rsa")
-      host        = "${yandex_compute_instance.vm-2.network_interface.0.ip_address}"
-    }
-  
-  }
-
 }
 
 resource "time_sleep" "wait_90_seconds_vm2" {
   depends_on = [yandex_compute_instance.vm-2]
 
-  create_duration = "90s" 
+  create_duration = "30s" 
 }
 
 resource "yandex_vpc_network" "network-1" {
@@ -178,5 +125,7 @@ output "internal_ip_address_vm_1" {
 output "internal_ip_address_vm_2" {
   value = yandex_compute_instance.vm-2.network_interface.0.ip_address
 }
+
+
 
 

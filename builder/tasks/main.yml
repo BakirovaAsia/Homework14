@@ -1,0 +1,30 @@
+---
+# tasks file for builder
+- name: Ensure git is install
+  apt:
+    update_cache: yes 
+    name: git
+    state: present 
+
+- name: Ensure Github-repo is clone  
+  git:
+    repo: "{{ my_repo }}"
+    dest: "{{ build_dir }}"
+    clone: yes
+
+- name: Ensure in DockerHub is login
+  docker_login:
+    username: "{{ DockerHub_user }}"
+    password: "{{ DockerHub_pass }}"
+
+- name: Ensure Docker image is build
+  docker_image:
+    name: bakirovaasia/caucuscalculator
+    build:
+      path: "{{ build_dir }}/multistage"
+    tag: latest
+    push: yes
+    source: build
+  
+  notify:
+    - DockerHub logout

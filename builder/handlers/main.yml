@@ -1,0 +1,5 @@
+---
+# handlers file for builder
+- name: DockerHub logout
+  docker_login:
+    state: absent
