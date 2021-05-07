@@ -1,5 +1,10 @@
 ---
 # tasks file for builder
+- name: Copy key.json
+  copy:
+    src: key.json
+    dest: /tmp/key.json
+
 - name: Ensure git is install
   apt:
     update_cache: yes 

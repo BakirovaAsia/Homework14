@@ -14,11 +14,6 @@
         groupname: deploy_host
         ansible_ssh_user: ubuntu      
     
-    - name: Copy key.json
-      copy:
-        src: key.json
-        dest: /tmp/key.json
-
 
 - name: Build-server configuration
   hosts: build_host
