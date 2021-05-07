@@ -18,11 +18,11 @@
     clone: yes
 
 - name: Ensure in DockerHub is login
-  docker_login:
-    registry_url: "{{ yandex_registry }}"
-    username: "{{ ya_cr_username }}"
-    password: "{{ ya_cr_password }}"
-
+  shell: cat "{{ ya_cr_password }}" | docker login \
+          --username "{{ ya_cr_username }}" \
+          --password-stdin \
+          "{{ yandex_registry }}"
+    
 - name: Ensure Docker image is build
   docker_image:
     name: "{{ yandex_registry }}/{{ repo_id }}/caucuscalculator"
