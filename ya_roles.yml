@@ -18,9 +18,6 @@
       copy:
         src: key.json
         dest: /tmp/key.json
-        owner: ubuntu
-        group: ubuntu
-
 
 
 - name: Build-server configuration
