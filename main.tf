@@ -116,6 +116,7 @@ resource "yandex_container_repository_iam_binding" "pusher" {
 resource "yandex_iam_service_account" "sa" {
   name        = "vmmanager"
   description = "service account to manage VMs"
+  folder_id = "b1g8vakc2uotg05v3orc"
 }
 
 output "internal_ip_address_vm_1" {

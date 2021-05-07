@@ -14,12 +14,13 @@
 
 - name: Ensure in DockerHub is login
   docker_login:
-    username: "{{ DockerHub_user }}"
-    password: "{{ DockerHub_pass }}"
+    registry_url: {{ yandex_registry }}
+    username: "{{ ya_cr_username }}"
+    password: "{{ ya_cr_password }}"
 
 - name: Ensure Docker image is build
   docker_image:
-    name: bakirovaasia/caucuscalculator
+    name: {{ yandex_registry }}/{{ repo_id }}/caucuscalculator
     build:
       path: "{{ build_dir }}/multistage"
     tag: latest
