@@ -73,7 +73,6 @@ resource "yandex_vpc_subnet" "subnet-1" {
   name           = "subnet1"
   zone           = "ru-central1-c"
   network_id     = yandex_vpc_network.network-1.id
-  v4_cidr_blocks = ["192.168.10.0/24"]
 }
 
 resource yandex_container_registry "my-registry" {
@@ -106,11 +105,11 @@ resource "yandex_iam_service_account" "sa" {
 }
 
 output "internal_ip_address_vm_1" {
-  value = yandex_compute_instance.vm-1.network_interface.0.ip_address
+  value = yandex_compute_instance.vm-1.network_interface.0.nat_ip_address
 }
 
 output "internal_ip_address_vm_2" {
-  value = yandex_compute_instance.vm-2.network_interface.0.ip_address
+  value = yandex_compute_instance.vm-2.network_interface.0.nat_ip_address
 }
 
 resource "null_resource" "ansible" {
@@ -118,7 +117,11 @@ resource "null_resource" "ansible" {
   provisioner "local-exec" {
     command = <<EOT
      yc iam key create --service-account-name vmmanager -o key.json    
-     echo registry_id: ${yandex_container_registry.my-registry.id}
+     ansible-playbook ya_roles.yml \
+              --extra-vars \
+                  "vm1_public_ip=${yandex_compute_instance.vm-1.network_interface.0.nat_ip_address} \
+                   vm2_public_ip=${yandex_compute_instance.vm-2.network_interface.0.nat_ip_address} \
+                  repo_id=${yandex_container_registry.my-registry.id}"
     EOT
   }
 }

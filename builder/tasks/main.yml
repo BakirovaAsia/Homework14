@@ -25,7 +25,7 @@
     
 - name: Ensure Docker image is build
   docker_image:
-    name: "{{ yandex_registry }}/{{ repo_id }}/caucuscalculator"
+    name: "{{ yandex_registry }}/{{ reg_id }}/caucuscalculator"
     build:
       path: "{{ build_dir }}/multistage"
     tag: latest
