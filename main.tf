@@ -82,7 +82,7 @@ resource yandex_container_registry "my-registry" {
 }
 
 resource "yandex_container_registry_iam_binding" "puller" {
-  registry_id  = yandex_container_registry.my-registry-1.id
+  registry_id  = yandex_container_registry.my-registry.id
   role        = "container-registry.images.puller"
 
   members = [
@@ -91,7 +91,7 @@ resource "yandex_container_registry_iam_binding" "puller" {
 }
 
 resource "yandex_container_registry_iam_binding" "pusher" {
-  registry_id  = yandex_container_registry.my-registry-1.id
+  registry_id  = yandex_container_registry.my-registry.id
   role        = "container-registry.images.pusher"
 
   members = [
