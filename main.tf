@@ -115,6 +115,12 @@ output "internal_ip_address_vm_2" {
   value = yandex_compute_instance.vm-2.network_interface.0.ip_address
 }
 
+resource "null_resource" "web" {
+  # ...
 
+  provisioner "local-exec" {
+    command = "echo vm1: ${yandex_compute_instance.vm-1.network_interface.0.ip_address}"
+  }
+}
 
 

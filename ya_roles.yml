@@ -1,0 +1,36 @@
+---
+- name: Adding hosts
+  hosts: localhost
+  tasks:
+    - name: Add building vm to host group
+      add_host:
+        hostname: "{{ vm1_public_ip }}"
+        groupname: build_host
+        ansible_ssh_user: ubuntu
+
+    - name: Add building vm to host group
+      add_host:
+        hostname: "{{ vm2_public_ip }}"
+        groupname: deploy_host
+        ansible_ssh_user: ubuntu      
+
+
+- name: Build-server configuration
+  hosts: build_host
+  become: yes
+  vars_files:
+    - vars.yml
+
+  roles:
+    - docker
+    - builder
+
+
+- name: Web-server configuration
+  hosts: deploy_host
+
+  become: yes
+
+  roles:
+    - docker
+    - deployer
