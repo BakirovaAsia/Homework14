@@ -26,7 +26,6 @@
 
 - name: Web-server configuration
   hosts: deploy_host
-
   become: yes
 
   roles:
