@@ -2,7 +2,7 @@
 # vars file for builder
 my_repo: https://github.com/BakirovaAsia/Homework7.git
 build_dir: /home/admin/Homework7
-yandex_registry: cr.yandex
+yandex_registry: cr.yandex/
 ya_cr_username: json_key 
 ya_cr_password : oauth 
 repo_id: will_be_changed
