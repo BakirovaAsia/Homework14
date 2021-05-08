@@ -8,7 +8,7 @@
         groupname: build_host
         ansible_ssh_user: ubuntu
 
-    - name: Add building vm to host group
+    - name: Add deploy vm to host group
       add_host:
         hostname: "{{ vm2_public_ip }}"
         groupname: deploy_host
